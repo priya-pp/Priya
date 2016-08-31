@@ -141,6 +141,9 @@ class TackerManager(object):
                       {"type": plugin_inst.get_plugin_type(),
                        "desc": plugin_inst.get_plugin_description()})
 
+def fake():
+    pass
+
     @classmethod
     @utils.synchronized("manager")
     def _create_instance(cls):
