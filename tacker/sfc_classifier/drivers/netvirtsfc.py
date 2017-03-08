@@ -24,7 +24,7 @@ import yaml
 import requests
 import json
 
-from keystoneclient.v2_0 import client as ks_client
+from keystoneclient.v3 import client as ks_client
 from oslo_config import cfg
 
 from tacker.common import exceptions
