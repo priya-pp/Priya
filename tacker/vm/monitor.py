@@ -23,7 +23,7 @@ import six
 import threading
 import time
 
-from keystoneclient.v2_0 import client as ks_client
+from keystoneclient.v3 import client as ks_client
 from oslo_config import cfg
 from oslo_utils import timeutils
 
@@ -209,7 +209,9 @@ class Respawn(FailurePolicy):
         LOG.debug(_('new_device %s'), new_device)
 
         # keystone v2.0 specific
-        auth_url = CONF.keystone_authtoken.auth_uri + '/v2.0'
+        auth_url = CONF.keystone_authtoken.auth_uri
+        if not auth_url.endswith('v3'):
+            auth_url = '{0}/v3'.format(auth_url)
         authtoken = CONF.keystone_authtoken
         kc = ks_client.Client(
             tenant_name=authtoken.project_name,
@@ -256,7 +258,9 @@ class RespawnHeat(FailurePolicy):
         heatclient.delete(device_dict['instance_id'])
 
         # keystone v2.0 specific
-        auth_url = CONF.keystone_authtoken.auth_uri + '/v2.0'
+        auth_url = CONF.keystone_authtoken.auth_uri
+        if not auth_url.endswith('v3'):
+            auth_url = '{0}/v3'.format(auth_url)
         authtoken = CONF.keystone_authtoken
         kc = ks_client.Client(
             tenant_name=authtoken.project_name,
