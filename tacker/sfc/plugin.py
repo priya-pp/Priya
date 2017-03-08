@@ -197,6 +197,8 @@ class SFCPlugin(sfc_db.SFCPluginDb):
 class NeutronClient:
     def __init__(self):
         auth_url = cfg.CONF.keystone_authtoken.auth_uri
+        if not auth_url.endswith('v3'):
+            auth_url = '{0}/v3'.format(auth_url)
         authtoken = cfg.CONF.keystone_authtoken
         kwargs = {
             'password': authtoken.password,
