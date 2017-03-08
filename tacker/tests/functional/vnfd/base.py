@@ -58,7 +58,9 @@ class BaseTackerTest(base.TestCase):
         username = cfg.CONF.keystone_authtoken.username
         password = cfg.CONF.keystone_authtoken.password
         tenant_name = cfg.CONF.keystone_authtoken.project_name
-        auth_uri = cfg.CONF.keystone_authtoken.auth_uri + '/v2.0'
+        auth_uri = cfg.CONF.keystone_authtoken.auth_uri
+        if not auth_uri.endswith('v3'):
+            auth_uri = '{0}/v3'.format(auth_url)
         return tacker_client.Client(username=username, password=password,
                                  tenant_name=tenant_name,
                                  auth_url=auth_uri)
