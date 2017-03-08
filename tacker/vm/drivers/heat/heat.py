@@ -27,7 +27,7 @@ import yaml
 
 from heatclient import client as heat_client
 from heatclient import exc as heatException
-from keystoneclient.v2_0 import client as ks_client
+from keystoneclient.v3 import client as ks_client
 from oslo_config import cfg
 
 from tacker.common import log
@@ -451,7 +451,9 @@ class DeviceHeat(abstract_driver.DeviceAbstractDriver):
 class HeatClient:
     def __init__(self, context, password=None):
         # context, password are unused
-        auth_url = CONF.keystone_authtoken.auth_uri
+        auth_url = cfg.CONF.keystone_authtoken.auth_uri
+        if not auth_url.endswith('v3'):
+            auth_url = '{0}/v3'.format(auth_url)
         authtoken = CONF.keystone_authtoken
         kc = ks_client.Client(
             tenant_name=authtoken.project_name,
